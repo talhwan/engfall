@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+<div id="div_01" class="div_00">BOARD DETAIL</div>
+Order
+<input id="detail_board_order" type="text" readonly="readonly"/>
+Title
+<input id="detail_board_title" type="text"/>
+Content
+<input id="detail_board_content" type="text"/>
+
+<button onclick="detail_board()">detail</button>
+
+<script>
+
+    function detail_board(){
+
+        //url에서 id값 추출해오기!
+        let temp_url = window.location.href; // http://localhost:8080/board/detail/1?aerlael=222
+        let split_temp_url = temp_url.split('/');
+        let final_id = split_temp_url[split_temp_url.length - 1];
+        let split_q = final_id.split("?");
+        if(split_q.length > 0){
+            final_id = split_q[0];
+        }
+
+        $.ajax({
+            url: "/api/board/detail",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {
+                order : final_id
+            },
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                //alert(JSON.stringify(obj_data));
+                let eachData = obj_data["detail"];
+                //alert(eachData["title"]);
+                $("#detail_board_order").val(eachData['order']);
+                //document.getElementById('detail_board_order').value = '1112223333';
+
+                /*alert($("#detail_board_order").val());
+                alert(document.getElementById('detail_board_order').value);*/
+                $("#detail_board_title").val(eachData['title']);
+                $("#detail_board_content").val(eachData['content']);
+
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    /*alert(1);
+    let div_html = $("#div_01"); // => 0 or 1!!!!
+    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
+    alert(div_html.html());*/
+
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+<div>BOARD LIST</div>
+<div id="div_list"></div>
+
+<button onclick="list_board()">list</button>
+
+<script>
+
+    function list_board(){
+        $.ajax({
+            url: "/api/board/list",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {},
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                let alist = obj_data["list"];
+                for(let each of alist){
+                    $("#div_list").append("<div onclick=\"location.href='/board/detail/"+each['order']+"'\">"+each['title']+"</div>");
+                }
+                //!!!
+                //alert(JSON.stringify(obj_data));
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    /*alert(1);
+    let div_html = $("#div_01"); // => 0 or 1!!!!
+    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
+    alert(div_html.html());*/
+
+</script>
+</body>
+</html>

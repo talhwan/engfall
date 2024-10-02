@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+<div id="div_01" class="div_00">BOARD CREATE</div>
+Title
+<input id="create_board_title" type="text"/>
+Content
+<input id="create_board_content" type="text"/>
+
+<button onclick="create_board()">create</button>
+
+<script>
+
+    function create_board(){
+        $.ajax({
+            url: "/api/board/create",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {
+                title : $("#create_board_title").val()
+                , content : $("#create_board_content").val()
+            },
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    /*alert(1);
+    let div_html = $("#div_01"); // => 0 or 1!!!!
+    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
+    alert(div_html.html());*/
+
+</script>
+</body>
+</html>
