@@ -17,8 +17,40 @@ Content
 <input id="detail_board_content" type="text"/>
 
 <button onclick="detail_board()">detail</button>
+<button onclick="update_board()">update</button>
 
 <script>
+    function update_board(){
+
+        //url에서 id값 추출해오기!
+        let temp_url = window.location.href; // http://localhost:8080/board/detail/1?aerlael=222
+        let split_temp_url = temp_url.split('/');
+        let final_id = split_temp_url[split_temp_url.length - 1];
+        let split_q = final_id.split("?");
+        if(split_q.length > 0){
+            final_id = split_q[0];
+        }
+
+        $.ajax({
+            url: "/api/board/update",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {
+                order : final_id
+                ,title : $("#detail_board_title").val()
+                ,content : $("#detail_board_content").val()
+            },
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
 
     function detail_board(){
 

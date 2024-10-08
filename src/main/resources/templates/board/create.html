@@ -9,6 +9,8 @@
 </head>
 <body>
 <div id="div_01" class="div_00">BOARD CREATE</div>
+Id
+<input id="create_board_id" type="number"/>
 Title
 <input id="create_board_title" type="text"/>
 Content
@@ -24,7 +26,8 @@ Content
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
-                title : $("#create_board_title").val()
+                id : $("#create_board_id").val()
+                , title : $("#create_board_title").val()
                 , content : $("#create_board_content").val()
             },
             cache: false,

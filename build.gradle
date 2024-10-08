@@ -24,14 +24,15 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-/*
 
-    //여기서부터 추가 시작
     //domain
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //db
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.0' //db
+/*
+
+    //여기서부터 추가 시작
 
 
     //mybatis 사용
