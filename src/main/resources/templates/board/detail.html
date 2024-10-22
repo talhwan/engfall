@@ -10,7 +10,7 @@
 <body>
 <div id="div_01" class="div_00">BOARD DETAIL</div>
 Order
-<input id="detail_board_order" type="text" readonly="readonly"/>
+<input id="detail_board_id" type="text" readonly="readonly"/>
 Title
 <input id="detail_board_title" type="text"/>
 Content
@@ -20,6 +20,10 @@ Content
 <button onclick="update_board()">update</button>
 
 <script>
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        detail_board();
+    });
     function update_board(){
 
         //url에서 id값 추출해오기!
@@ -36,7 +40,7 @@ Content
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
-                order : final_id
+                id : final_id
                 ,title : $("#detail_board_title").val()
                 ,content : $("#detail_board_content").val()
             },
@@ -68,12 +72,12 @@ Content
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
-                order : final_id
+                id : final_id
             },
             cache: false,
             success: (obj_data, status, xhr)=>{
                 //!!!
-                //alert(JSON.stringify(obj_data));
+                alert(JSON.stringify(obj_data));
                 let eachData = obj_data["detail"];
                 //alert(eachData["title"]);
                 $("#detail_board_order").val(eachData['order']);
@@ -81,6 +85,7 @@ Content
 
                 /*alert($("#detail_board_order").val());
                 alert(document.getElementById('detail_board_order').value);*/
+                $("#detail_board_id").val(eachData['id']);
                 $("#detail_board_title").val(eachData['title']);
                 $("#detail_board_content").val(eachData['content']);
 
