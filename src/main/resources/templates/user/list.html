@@ -8,16 +8,16 @@
 
 </head>
 <body>
-<div>BOARD LIST</div>
+<div>USER LIST</div>
 <div id="div_list"></div>
 
-<button onclick="list_board()">list</button>
+<button onclick="list_user()">list</button>
 
 <script>
 
-    function list_board(){
+    function list_user(){
         $.ajax({
-            url: "/api/board/list",
+            url: "/api/user/list",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {},
@@ -26,7 +26,7 @@
                 alert(JSON.stringify(obj_data));
                 let alist = obj_data["list"];
                 for(let each of alist){
-                    $("#div_list").append("<div onclick=\"location.href='/board/detail/"+each['id']+"'\">"+each['title']+"</div>");
+                    $("#div_list").append("<div onclick=\"location.href='/user/detail/"+each['id']+"'\">"+each['name']+"</div>");
                 }
                 //!!!
                 //

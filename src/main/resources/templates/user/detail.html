@@ -9,26 +9,26 @@
 </head>
 <body>
 <div id="div_01" class="div_00">BOARD DETAIL</div>
-Order
-<input id="detail_board_id" type="text" readonly="readonly"/>
-Title
-<input id="detail_board_title" type="text"/>
-Content
-<input id="detail_board_content" type="text"/>
+ID
+<input id="detail_user_id" type="text" readonly="readonly"/>
+USERNAME
+<input id="detail_user_username" type="text"/>
+NAME
+<input id="detail_user_name" type="text"/>
 
-<button onclick="detail_board()">detail</button>
-<button onclick="update_board()">update</button>
-<button onclick="delete_board()">delete</button>
+<button onclick="detail_user()">detail</button>
+<button onclick="update_user()">update</button>
+<button onclick="delete_user()">delete</button>
 
 <script>
     $( document ).ready(function() {
         console.log( "ready!" );
-        detail_board();
+        detail_user();
     });
-    function update_board(){
+    function update_user(){
 
         //url에서 id값 추출해오기!
-        let temp_url = window.location.href; // http://localhost:8080/board/detail/1?aerlael=222
+        let temp_url = window.location.href; // http://localhost:8080/user/detail/1?aerlael=222
         let split_temp_url = temp_url.split('/');
         let final_id = split_temp_url[split_temp_url.length - 1];
         let split_q = final_id.split("?");
@@ -37,13 +37,13 @@ Content
         }
 
         $.ajax({
-            url: "/api/board/update",
+            url: "/api/user/update",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
                 id : final_id
-                ,title : $("#detail_board_title").val()
-                ,content : $("#detail_board_content").val()
+                ,username : $("#detail_user_username").val()
+                ,name : $("#detail_user_name").val()
             },
             cache: false,
             success: (obj_data, status, xhr)=>{
@@ -56,10 +56,10 @@ Content
             }
         });
     }
-    function delete_board(){
+    function delete_user(){
 
         //url에서 id값 추출해오기!
-        let temp_url = window.location.href; // http://localhost:8080/board/detail/1?aerlael=222
+        let temp_url = window.location.href; // http://localhost:8080/user/detail/1?aerlael=222
         let split_temp_url = temp_url.split('/');
         let final_id = split_temp_url[split_temp_url.length - 1];
         let split_q = final_id.split("?");
@@ -68,7 +68,7 @@ Content
         }
 
         $.ajax({
-            url: "/api/board/delete",
+            url: "/api/user/delete",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
@@ -86,10 +86,10 @@ Content
         });
     }
 
-    function detail_board(){
+    function detail_user(){
 
         //url에서 id값 추출해오기!
-        let temp_url = window.location.href; // http://localhost:8080/board/detail/1?aerlael=222
+        let temp_url = window.location.href; // http://localhost:8080/user/detail/1?aerlael=222
         let split_temp_url = temp_url.split('/');
         let final_id = split_temp_url[split_temp_url.length - 1];
         let split_q = final_id.split("?");
@@ -98,7 +98,7 @@ Content
         }
 
         $.ajax({
-            url: "/api/board/detail",
+            url: "/api/user/detail",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
@@ -109,15 +109,9 @@ Content
                 //!!!
                 alert(JSON.stringify(obj_data));
                 let eachData = obj_data["detail"];
-                //alert(eachData["title"]);
-                $("#detail_board_order").val(eachData['order']);
-                //document.getElementById('detail_board_order').value = '1112223333';
-
-                /*alert($("#detail_board_order").val());
-                alert(document.getElementById('detail_board_order').value);*/
-                $("#detail_board_id").val(eachData['id']);
-                $("#detail_board_title").val(eachData['title']);
-                $("#detail_board_content").val(eachData['content']);
+                $("#detail_user_id").val(eachData['id']);
+                $("#detail_user_username").val(eachData['username']);
+                $("#detail_user_name").val(eachData['name']);
 
             },
             error: (obj_data, status, xhr)=>{

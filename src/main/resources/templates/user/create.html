@@ -8,28 +8,33 @@
 
 </head>
 <body>
-<div>BOARD LIST</div>
-<div id="div_list"></div>
+<div id="div_01" class="div_00">CREATE</div>
+USERNAME
+<input id="create_user_username" type="text"/>
+PASSWORD
+<input id="create_user_password" type="password"/>
+NAME
+<input id="create_user_name" type="text"/>
 
-<button onclick="list_board()">list</button>
+<button onclick="create_user()">create</button>
 
 <script>
 
-    function list_board(){
+    function create_user(){
         $.ajax({
-            url: "/api/board/list",
+            url: "/api/user/create",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
-            data: {},
+            data: {
+                username : $("#create_user_username").val()
+                , password : $("#create_user_password").val()
+                , name : $("#create_user_name").val()
+            },
             cache: false,
             success: (obj_data, status, xhr)=>{
-                alert(JSON.stringify(obj_data));
-                let alist = obj_data["list"];
-                for(let each of alist){
-                    $("#div_list").append("<div onclick=\"location.href='/board/detail/"+each['id']+"'\">"+each['title']+"</div>");
-                }
                 //!!!
-                //
+                alert(JSON.stringify(obj_data));
+
             },
             error: (obj_data, status, xhr)=>{
                 alert("error!!");

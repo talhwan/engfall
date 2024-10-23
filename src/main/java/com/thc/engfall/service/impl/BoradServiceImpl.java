@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -52,6 +53,14 @@ public class BoradServiceImpl implements BoardService {
 
         return result;
     }
+    public Map<String, Object> delete(Long id){
+        Board board = boardRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
+        boardRepositiry.delete(board);
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("resultCode", 200);
+        return result;
+    }
     public Map<String, Object> detail(Long id){
         Board board = boardRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
         Map<String, Object> result = new HashMap<String, Object>();
@@ -62,6 +71,14 @@ public class BoradServiceImpl implements BoardService {
         data.put("title", board.getTitle());
         data.put("content", board.getContent());
         result.put("detail", data);
+
+        return result;
+    }
+    public Map<String, Object> list(){
+        List<Board> listBoard = boardRepositiry.findAll();
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("resultCode", 200);
+        result.put("list", listBoard);
 
         return result;
     }
