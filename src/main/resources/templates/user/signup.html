@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+
+Signup!!
+<br/>
+USERNAME
+<input id="create_user_username" type="text"/>
+PASSWORD
+<input id="create_user_password" type="password"/>
+NAME
+<input id="create_user_name" type="text"/>
+PHONE
+<input id="create_user_phone" type="text"/>
+
+<button onclick="create_user()">create</button>
+
+<script>
+
+    function create_user(){
+        $.ajax({
+            url: "/api/user/signup",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {
+                username : $("#create_user_username").val()
+                , password : $("#create_user_password").val()
+                , name : $("#create_user_name").val()
+                , phone : $("#create_user_phone").val()
+            },
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

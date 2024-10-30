@@ -1,10 +1,10 @@
 package com.thc.engfall.controller;
 
+import com.thc.engfall.dto.UserDto;
 import com.thc.engfall.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -16,6 +16,17 @@ public class UserRestController {
     public UserRestController(UserService userService){
         this.userService = userService;
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDto.CreateResDto> login(@RequestBody UserDto.LoginReqDto params){
+        return ResponseEntity.ok(userService.login(params));
+    }
+    @GetMapping("/signup")
+    public Map<String, Object> signup(@RequestParam Map<String, Object> params){
+        return userService.signup(params);
+    }
+
+    /**/
 
     @GetMapping("/create")
     public Map<String, Object> create(@RequestParam Map<String, Object> params){

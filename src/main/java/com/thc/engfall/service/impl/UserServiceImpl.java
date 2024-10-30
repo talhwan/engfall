@@ -1,5 +1,6 @@
 package com.thc.engfall.service.impl;
 
+import com.thc.engfall.dto.UserDto;
 import com.thc.engfall.entity.User;
 import com.thc.engfall.repository.UserRepositiry;
 import com.thc.engfall.service.UserService;
@@ -17,19 +18,39 @@ public class UserServiceImpl implements UserService {
         this.userRepositiry = userRepositiry;
     }
 
+    @Override
+    public UserDto.CreateResDto login(UserDto.LoginReqDto params){
+        if(params.getUsername() == null || params.getPassword() == null){
+            throw new RuntimeException("neccessary parameters");
+        }
+        User user = userRepositiry.findByUsernameAndPassword(params.getUsername(), params.getPassword());
+        if(user == null){
+            throw new RuntimeException("id or password incorrect");
+        }
+        return UserDto.CreateResDto.builder().id(user.getId()).build();
+    }
+    @Override
+    public Map<String, Object> signup(Map<String, Object> params){
+        //add some functions?!
+        //here!!
+        return create(params);
+    }
+
+    @Override
     public Map<String, Object> create(Map<String, Object> params){
 
         User user = new User();
         user.setUsername(params.get("username").toString());
         user.setPassword(params.get("password").toString());
         user.setName(params.get("name").toString());
-
         if(params.get("phone") != null){
             user.setPhone(params.get("phone").toString());
         }
-        /*user.setPhone(params.get("phone"));
-        user.setBirth(params.get("birth").toString());
-        user.setGender(params.get("gender").toString());*/
+
+        User user2 = userRepositiry.findByUsername(params.get("username").toString());
+        if(user2 != null){
+            throw new RuntimeException("username already exist");
+        }
         userRepositiry.save(user);
 
         Map<String, Object> result = new HashMap<String, Object>();
@@ -38,6 +59,8 @@ public class UserServiceImpl implements UserService {
 
         return result;
     }
+
+    @Override
     public Map<String, Object> update(Map<String, Object> params){
 
         Long id = Long.parseLong(params.get("id").toString());
@@ -59,6 +82,8 @@ public class UserServiceImpl implements UserService {
 
         return result;
     }
+
+    @Override
     public Map<String, Object> delete(Long id){
         User user = userRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
         userRepositiry.delete(user);
@@ -67,6 +92,8 @@ public class UserServiceImpl implements UserService {
         result.put("resultCode", 200);
         return result;
     }
+
+    @Override
     public Map<String, Object> detail(Long id){
         User user = userRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
         Map<String, Object> result = new HashMap<String, Object>();
@@ -82,6 +109,8 @@ public class UserServiceImpl implements UserService {
 
         return result;
     }
+
+    @Override
     public Map<String, Object> list(){
         List<User> listUser = userRepositiry.findAll();
         Map<String, Object> result = new HashMap<String, Object>();

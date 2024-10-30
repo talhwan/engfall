@@ -13,7 +13,7 @@ public class User {
     @Id
     Long id;
 
-    @Setter @Column(nullable = false) String username;
+    @Setter @Column(nullable = false, unique = true) String username;
     @Setter @Column(nullable = false) String password;
     @Setter @Column(nullable = false) String name;
     @Setter String phone;
