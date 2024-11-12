@@ -3,16 +3,17 @@ package com.thc.engfall.service;
 import com.thc.engfall.dto.UserDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public interface UserService {
     UserDto.CreateResDto login(UserDto.LoginReqDto params);
-    Map<String, Object> signup(Map<String, Object> params);
+    UserDto.CreateResDto signup(UserDto.CreateReqDto params);
     /**/
-    Map<String, Object> create(Map<String, Object> params);
-    Map<String, Object> update(Map<String, Object> params);
-    Map<String, Object> delete(Long id);
-    Map<String, Object> detail(Long id);
-    Map<String, Object> list();
+    UserDto.CreateResDto create(UserDto.CreateReqDto params);
+    void update(UserDto.UpdateReqDto params);
+    void delete(UserDto.UpdateReqDto params);
+    UserDto.DetailResDto detail(UserDto.DetailReqDto params);
+    List<UserDto.DetailResDto> list();
 }

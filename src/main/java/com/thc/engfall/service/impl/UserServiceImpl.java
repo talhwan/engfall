@@ -6,6 +6,7 @@ import com.thc.engfall.repository.UserRepositiry;
 import com.thc.engfall.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,93 +31,69 @@ public class UserServiceImpl implements UserService {
         return UserDto.CreateResDto.builder().id(user.getId()).build();
     }
     @Override
-    public Map<String, Object> signup(Map<String, Object> params){
+    public UserDto.CreateResDto signup(UserDto.CreateReqDto params){
         //add some functions?!
         //here!!
         return create(params);
     }
 
     @Override
-    public Map<String, Object> create(Map<String, Object> params){
-
-        User user = new User();
-        user.setUsername(params.get("username").toString());
-        user.setPassword(params.get("password").toString());
-        user.setName(params.get("name").toString());
-        if(params.get("phone") != null){
-            user.setPhone(params.get("phone").toString());
-        }
-
-        User user2 = userRepositiry.findByUsername(params.get("username").toString());
-        if(user2 != null){
+    public UserDto.CreateResDto create(UserDto.CreateReqDto params){
+        User user = userRepositiry.findByUsername(params.getUsername());
+        if(user != null){
             throw new RuntimeException("username already exist");
         }
-        userRepositiry.save(user);
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("resultCode", 200);
-        result.put("id", user.getId());
-
-        return result;
+        return userRepositiry.save(params.toEntity()).toCreateResDto();
     }
 
     @Override
-    public Map<String, Object> update(Map<String, Object> params){
-
-        Long id = Long.parseLong(params.get("id").toString());
-        String name = (String) params.get("name");
-        String phone = (String) params.get("phone");
-
-        User user = userRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
-        if(name != null){
-            user.setName(name);
+    public void update(UserDto.UpdateReqDto params){
+        User user = userRepositiry.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        if(params.getPassword() != null){
+            user.setPassword(params.getPassword());
         }
-        if(phone != null){
-            user.setPhone(phone);
+        if(params.getName() != null){
+            user.setName(params.getName());
+        }
+        if(params.getPhone() != null){
+            user.setPhone(params.getPhone());
+        }
+        if(params.getGender() != null){
+            user.setGender(params.getGender());
         }
         userRepositiry.save(user);
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("resultCode", 200);
-        result.put("id", user.getId());
-
-        return result;
     }
 
     @Override
-    public Map<String, Object> delete(Long id){
-        User user = userRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
-        userRepositiry.delete(user);
+    public void delete(UserDto.UpdateReqDto params){
+        User user = userRepositiry.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        user.setDeleted(true);
+        userRepositiry.save(user);
+    }
 
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("resultCode", 200);
-        return result;
+    public UserDto.DetailResDto get(User user){
+        UserDto.DetailResDto returnVal = UserDto.DetailResDto.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .name(user.getName())
+                .phone(user.getPhone())
+                .gender(user.getGender())
+                .build();
+        return returnVal;
+    }
+    @Override
+    public UserDto.DetailResDto detail(UserDto.DetailReqDto params){
+        User user = userRepositiry.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        return get(user);
     }
 
     @Override
-    public Map<String, Object> detail(Long id){
-        User user = userRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("resultCode", 200);
-
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("id", user.getId());
-        data.put("username", user.getUsername());
-        data.put("name", user.getName());
-        data.put("phone", user.getPhone());
-        data.put("birth", user.getBirth());
-        result.put("detail", data);
-
-        return result;
-    }
-
-    @Override
-    public Map<String, Object> list(){
+    public List<UserDto.DetailResDto> list(){
         List<User> listUser = userRepositiry.findAll();
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("resultCode", 200);
-        result.put("list", listUser);
-
-        return result;
+        List<UserDto.DetailResDto> returnList = new ArrayList<UserDto.DetailResDto>();
+        for(User each : listUser){
+            returnList.add(get(each));
+        }
+        return returnList;
     }
 }

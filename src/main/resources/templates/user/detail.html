@@ -37,14 +37,14 @@ NAME
         }
 
         $.ajax({
-            url: "/api/user/update",
-            type: "GET",
+            url: "/api/user",
+            type: "PUT",
             contentType : 'application/json; charset=utf-8',
-            data: {
+            data: JSON.stringify({
                 id : final_id
                 ,username : $("#detail_user_username").val()
                 ,name : $("#detail_user_name").val()
-            },
+            }),
             cache: false,
             success: (obj_data, status, xhr)=>{
                 //!!!
@@ -68,12 +68,12 @@ NAME
         }
 
         $.ajax({
-            url: "/api/user/delete",
-            type: "GET",
+            url: "/api/user",
+            type: "DELETE",
             contentType : 'application/json; charset=utf-8',
-            data: {
+            data: JSON.stringify({
                 id : final_id
-            },
+            }),
             cache: false,
             success: (obj_data, status, xhr)=>{
                 //!!!

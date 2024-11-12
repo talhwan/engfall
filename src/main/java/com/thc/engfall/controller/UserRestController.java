@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api/user")
@@ -21,33 +22,36 @@ public class UserRestController {
     public ResponseEntity<UserDto.CreateResDto> login(@RequestBody UserDto.LoginReqDto params){
         return ResponseEntity.ok(userService.login(params));
     }
-    @GetMapping("/signup")
-    public Map<String, Object> signup(@RequestParam Map<String, Object> params){
-        return userService.signup(params);
+    @PostMapping("/signup")
+    public ResponseEntity<UserDto.CreateResDto> signup(@RequestBody UserDto.CreateReqDto params){
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.signup(params));
     }
 
     /**/
 
-    @GetMapping("/create")
-    public Map<String, Object> create(@RequestParam Map<String, Object> params){
-        return userService.create(params);
+    @PostMapping("")
+    public ResponseEntity<UserDto.CreateResDto> create(@RequestBody UserDto.CreateReqDto params){
+        //return ResponseEntity.ok(userService.create(params));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(params));
     }
-    @GetMapping("/update")
-    public Map<String, Object> update(@RequestParam Map<String, Object> params){
-        return userService.update(params);
+    @PutMapping("")
+    public ResponseEntity<Void> update(@RequestBody UserDto.UpdateReqDto params){
+        userService.update(params);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @GetMapping("/delete")
-    public Map<String, Object> delete(@RequestParam Long id){
-        return userService.delete(id);
+    @DeleteMapping("")
+    public ResponseEntity<Void> delete(@RequestBody UserDto.UpdateReqDto params){
+        userService.delete(params);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/list")
-    public Map<String, Object> list(){
-        return userService.list();
+    public ResponseEntity<List<UserDto.DetailResDto>> list(){
+        return ResponseEntity.ok(userService.list());
     }
     @GetMapping("/detail")
-    public Map<String, Object> detail(@RequestParam Long id){
-        return userService.detail(id);
+    public ResponseEntity<UserDto.DetailResDto> detail(UserDto.DetailReqDto params){
+        return ResponseEntity.ok(userService.detail(params));
     }
 
 }
