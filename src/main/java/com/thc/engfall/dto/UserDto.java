@@ -45,7 +45,7 @@ public class UserDto {
         Long id;
     }
 
-    @Getter @Setter @Builder
+    @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
     public static class DetailResDto {
         Long id;
 
@@ -54,5 +54,13 @@ public class UserDto {
         String phone;
         String birth;
         String gender;
+    }
+
+
+    @Getter @Setter @Builder
+    public static class ListReqDto {
+        Boolean deleted;
+        String name;
+        String phone;
     }
 }

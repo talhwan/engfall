@@ -2,8 +2,10 @@ package com.thc.engfall.service.impl;
 
 import com.thc.engfall.dto.UserDto;
 import com.thc.engfall.entity.User;
+import com.thc.engfall.mapper.UserMapper;
 import com.thc.engfall.repository.UserRepositiry;
 import com.thc.engfall.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,8 +17,13 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     UserRepositiry userRepositiry;
-    public UserServiceImpl(UserRepositiry userRepositiry){
+    UserMapper userMapper;
+    public UserServiceImpl(
+            UserRepositiry userRepositiry
+            , UserMapper userMapper
+    ){
         this.userRepositiry = userRepositiry;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -71,29 +78,22 @@ public class UserServiceImpl implements UserService {
         userRepositiry.save(user);
     }
 
-    public UserDto.DetailResDto get(User user){
-        UserDto.DetailResDto returnVal = UserDto.DetailResDto.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .name(user.getName())
-                .phone(user.getPhone())
-                .gender(user.getGender())
-                .build();
-        return returnVal;
+    public UserDto.DetailResDto get(Long id){
+        UserDto.DetailResDto returnvalue = userMapper.detail(id);
+        return returnvalue;
     }
     @Override
     public UserDto.DetailResDto detail(UserDto.DetailReqDto params){
-        User user = userRepositiry.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
-        return get(user);
+        return get(params.getId());
     }
 
     @Override
-    public List<UserDto.DetailResDto> list(){
-        List<User> listUser = userRepositiry.findAll();
-        List<UserDto.DetailResDto> returnList = new ArrayList<UserDto.DetailResDto>();
-        for(User each : listUser){
-            returnList.add(get(each));
+    public List<UserDto.DetailResDto> list(UserDto.ListReqDto params){
+        List<UserDto.DetailResDto> list = userMapper.list(params);
+        List<UserDto.DetailResDto> newList = new ArrayList<>();
+        for(UserDto.DetailResDto each : list){
+            newList.add( get(each.getId()) );
         }
-        return returnList;
+        return newList;
     }
 }

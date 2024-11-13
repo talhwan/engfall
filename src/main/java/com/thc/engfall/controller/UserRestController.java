@@ -46,8 +46,8 @@ public class UserRestController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<UserDto.DetailResDto>> list(){
-        return ResponseEntity.ok(userService.list());
+    public ResponseEntity<List<UserDto.DetailResDto>> list(UserDto.ListReqDto params){
+        return ResponseEntity.ok(userService.list(params));
     }
     @GetMapping("/detail")
     public ResponseEntity<UserDto.DetailResDto> detail(UserDto.DetailReqDto params){

@@ -15,5 +15,5 @@ public interface UserService {
     void update(UserDto.UpdateReqDto params);
     void delete(UserDto.UpdateReqDto params);
     UserDto.DetailResDto detail(UserDto.DetailReqDto params);
-    List<UserDto.DetailResDto> list();
+    List<UserDto.DetailResDto> list(UserDto.ListReqDto params);
 }

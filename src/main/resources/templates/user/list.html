@@ -20,7 +20,11 @@
             url: "/api/user/list",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
-            data: {},
+            data: {
+                deleted : null
+                , name : null
+                , phone : null
+            },
             cache: false,
             success: (obj_data, status, xhr)=>{
                 alert(JSON.stringify(obj_data));
