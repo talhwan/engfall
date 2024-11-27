@@ -3,26 +3,23 @@ package com.thc.engfall.service.impl;
 import com.thc.engfall.dto.UserDto;
 import com.thc.engfall.entity.User;
 import com.thc.engfall.mapper.UserMapper;
-import com.thc.engfall.repository.UserRepositiry;
+import com.thc.engfall.repository.UserRepository;
 import com.thc.engfall.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepositiry userRepositiry;
+    UserRepository userRepository;
     UserMapper userMapper;
     public UserServiceImpl(
-            UserRepositiry userRepositiry
+            UserRepository userRepository
             , UserMapper userMapper
     ){
-        this.userRepositiry = userRepositiry;
+        this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
@@ -31,7 +28,7 @@ public class UserServiceImpl implements UserService {
         if(params.getUsername() == null || params.getPassword() == null){
             throw new RuntimeException("neccessary parameters");
         }
-        User user = userRepositiry.findByUsernameAndPassword(params.getUsername(), params.getPassword());
+        User user = userRepository.findByUsernameAndPassword(params.getUsername(), params.getPassword());
         if(user == null){
             throw new RuntimeException("id or password incorrect");
         }
@@ -46,16 +43,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto.CreateResDto create(UserDto.CreateReqDto params){
-        User user = userRepositiry.findByUsername(params.getUsername());
+        User user = userRepository.findByUsername(params.getUsername());
         if(user != null){
             throw new RuntimeException("username already exist");
         }
-        return userRepositiry.save(params.toEntity()).toCreateResDto();
+        return userRepository.save(params.toEntity()).toCreateResDto();
     }
 
     @Override
     public void update(UserDto.UpdateReqDto params){
-        User user = userRepositiry.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        User user = userRepository.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
         if(params.getPassword() != null){
             user.setPassword(params.getPassword());
         }
@@ -68,14 +65,14 @@ public class UserServiceImpl implements UserService {
         if(params.getGender() != null){
             user.setGender(params.getGender());
         }
-        userRepositiry.save(user);
+        userRepository.save(user);
     }
 
     @Override
     public void delete(UserDto.UpdateReqDto params){
-        User user = userRepositiry.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
+        User user = userRepository.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
         user.setDeleted(true);
-        userRepositiry.save(user);
+        userRepository.save(user);
     }
 
     public UserDto.DetailResDto get(Long id){

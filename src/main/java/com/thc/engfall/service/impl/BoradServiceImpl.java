@@ -1,9 +1,8 @@
 package com.thc.engfall.service.impl;
 
 import com.thc.engfall.entity.Board;
-import com.thc.engfall.repository.BoardRepositiry;
+import com.thc.engfall.repository.BoardRepository;
 import com.thc.engfall.service.BoardService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -13,9 +12,9 @@ import java.util.Map;
 @Service
 public class BoradServiceImpl implements BoardService {
 
-    BoardRepositiry boardRepositiry;
-    public BoradServiceImpl(BoardRepositiry boardRepositiry){
-        this.boardRepositiry = boardRepositiry;
+    BoardRepository boardRepository;
+    public BoradServiceImpl(BoardRepository boardRepository){
+        this.boardRepository = boardRepository;
     }
 
     public Map<String, Object> create(Map<String, Object> params){
@@ -24,7 +23,7 @@ public class BoradServiceImpl implements BoardService {
         //board.setId(Long.parseLong(params.get("id") + ""));
         board.setTitle(params.get("title").toString());
         board.setContent(params.get("content").toString());
-        boardRepositiry.save(board);
+        boardRepository.save(board);
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("resultCode", 200);
@@ -38,14 +37,14 @@ public class BoradServiceImpl implements BoardService {
         String title = (String) params.get("title");
         String content = (String) params.get("content");
 
-        Board board = boardRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("no data"));
         if(title != null){
             board.setTitle(title);
         }
         if(content != null){
             board.setContent(content);
         }
-        boardRepositiry.save(board);
+        boardRepository.save(board);
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("resultCode", 200);
@@ -54,15 +53,15 @@ public class BoradServiceImpl implements BoardService {
         return result;
     }
     public Map<String, Object> delete(Long id){
-        Board board = boardRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
-        boardRepositiry.delete(board);
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("no data"));
+        boardRepository.delete(board);
 
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("resultCode", 200);
         return result;
     }
     public Map<String, Object> detail(Long id){
-        Board board = boardRepositiry.findById(id).orElseThrow(() -> new RuntimeException("no data"));
+        Board board = boardRepository.findById(id).orElseThrow(() -> new RuntimeException("no data"));
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("resultCode", 200);
 
@@ -75,7 +74,7 @@ public class BoradServiceImpl implements BoardService {
         return result;
     }
     public Map<String, Object> list(){
-        List<Board> listBoard = boardRepositiry.findAll();
+        List<Board> listBoard = boardRepository.findAll();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("resultCode", 200);
         result.put("list", listBoard);

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+<div id="div_01" class="div_00">CREATE</div>
+TITLE
+<input id="create_post_title" type="text"/>
+CONTENT
+<input id="create_post_content" type="text"/><!--
+AUTHOR
+<input id="create_post_author" type="text"/>-->
+
+<button onclick="create_post()">create</button>
+
+<script>
+
+    function create_post(){
+
+        let userId = localStorage.getItem("userId");
+        if(userId == null){
+            alert("you are not logged in...");
+            return false;
+        }
+
+        $.ajax({
+            url: "/api/post",
+            type: "POST",
+            contentType : 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                title : $("#create_post_title").val()
+                , content : $("#create_post_content").val()
+                , userId : userId
+            }),
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    /*alert(1);
+    let div_html = $("#div_01"); // => 0 or 1!!!!
+    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
+    alert(div_html.html());*/
+
+</script>
+</body>
+</html>

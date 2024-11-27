@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+<div id="div_01" class="div_00">BOARD DETAIL</div>
+ID
+<input id="detail_post_id" type="text" readonly="readonly"/>
+TITLE
+<input id="detail_post_title" type="text"/>
+CONTENT
+<input id="detail_post_content" type="text"/>
+AUTHOR
+<input id="detail_post_author" type="text"/>
+
+<button onclick="detail_post()">detail</button>
+<button onclick="update_post()">update</button>
+<button onclick="delete_post()">delete</button>
+
+<script>
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        detail_post();
+    });
+    function update_post(){
+
+        //url에서 id값 추출해오기!
+        let temp_url = window.location.href; // http://localhost:8080/post/detail/1?aerlael=222
+        let split_temp_url = temp_url.split('/');
+        let final_id = split_temp_url[split_temp_url.length - 1];
+        let split_q = final_id.split("?");
+        if(split_q.length > 0){
+            final_id = split_q[0];
+        }
+
+        $.ajax({
+            url: "/api/post",
+            type: "PUT",
+            contentType : 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                id : final_id
+                ,title : $("#detail_post_title").val()
+                ,content : $("#detail_post_content").val()
+                ,author : $("#detail_post_author").val()
+            }),
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    function delete_post(){
+
+        //url에서 id값 추출해오기!
+        let temp_url = window.location.href; // http://localhost:8080/post/detail/1?aerlael=222
+        let split_temp_url = temp_url.split('/');
+        let final_id = split_temp_url[split_temp_url.length - 1];
+        let split_q = final_id.split("?");
+        if(split_q.length > 0){
+            final_id = split_q[0];
+        }
+
+        $.ajax({
+            url: "/api/post",
+            type: "DELETE",
+            contentType : 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                id : final_id
+            }),
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+
+    function detail_post(){
+
+        //url에서 id값 추출해오기!
+        let temp_url = window.location.href; // http://localhost:8080/post/detail/1?aerlael=222
+        let split_temp_url = temp_url.split('/');
+        let final_id = split_temp_url[split_temp_url.length - 1];
+        let split_q = final_id.split("?");
+        if(split_q.length > 0){
+            final_id = split_q[0];
+        }
+
+        $.ajax({
+            url: "/api/post/detail",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {
+                id : final_id
+            },
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+                let eachData = obj_data;
+                $("#detail_post_id").val(eachData['id']);
+                $("#detail_post_title").val(eachData['title']);
+                $("#detail_post_content").val(eachData['content']);
+                $("#detail_post_author").val(eachData['author']);
+
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    /*alert(1);
+    let div_html = $("#div_01"); // => 0 or 1!!!!
+    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
+    alert(div_html.html());*/
+
+</script>
+</body>
+</html>

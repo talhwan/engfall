@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thc.engfall.mapper.PostMapper">
+
+	<!---->
+
+	<select id="detail" parameterType="hashMap" resultType="com.thc.engfall.dto.PostDto$DetailResDto">
+		SELECT post.id
+			 , post.deleted
+			 , post.title
+			 , post.content
+			 , post.user_id as userId
+		, user.username as userUsername
+		, user.name as userName
+		, user.phone as userPhone
+		FROM post, user
+		WHERE post.user_id = user.id
+		AND post.id = #{id}
+	</select>
+	<select id="list" parameterType="hashMap" resultType="com.thc.engfall.dto.PostDto$DetailResDto">
+		SELECT post.id
+		FROM post
+		WHERE post.id is not NULL
+		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
+		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
+	</select>
+
+</mapper>

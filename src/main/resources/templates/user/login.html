@@ -16,10 +16,26 @@ USERNAME
 PASSWORD
 <input id="create_user_password" type="password"/>
 
+<div id="user_status">-</div>
+
 <button onclick="login_user()">login</button>
+<button onclick="logout_user()">logout</button>
 
 <script>
 
+    let userId = localStorage.getItem("userId");
+    if(userId != null){
+        alert("userId : " + userId);
+        $("#user_status").text("already login!!");
+    } else {
+        $("#user_status").text("not yet login!!");
+    }
+
+
+    function logout_user(){
+        localStorage.removeItem("userId"); //erase one!!
+        localStorage.clear(); //erase all!!
+    }
     function login_user(){
         $.ajax({
             url: "/api/user/login",
@@ -32,7 +48,9 @@ PASSWORD
             cache: false,
             success: (obj_data, status, xhr)=>{
                 //!!!
-                alert(JSON.stringify(obj_data));
+                //alert(JSON.stringify(obj_data));
+                localStorage.setItem("userId", obj_data["id"]);
+                location.replace("/post/list");
 
             },
             error: (obj_data, status, xhr)=>{
