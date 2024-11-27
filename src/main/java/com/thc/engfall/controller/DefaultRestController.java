@@ -1,11 +1,15 @@
 package com.thc.engfall.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,28 +17,24 @@ import java.util.Map;
 @RestController
 public class DefaultRestController {
 
-    @GetMapping("/index")
-    public Map<String, Object> index(@RequestParam int p1, @RequestParam int p2){
-        System.out.println("p1 : " + p1 + " p2 : " + p2);
-        int sum = p1 + p2;
-        System.out.println("sum : " + sum);
+    @PostMapping("/upload")
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("sum", sum);
-        return map;
-    }
+        String filename = file.getOriginalFilename();
+        System.out.println("filename : "+ filename);
 
-    @GetMapping("/index2")
-    public Map<String, Object> index2(@RequestParam Map<String, Object> params){
-        int p1 = Integer.parseInt(params.get("p1") + "") ;
-        int p2 = Integer.parseInt(params.get("p2") + "") ;
-        System.out.println("p1 : " + p1 + " p2 : " + p2);
-        int sum = p1 + p2;
-        System.out.println("sum : " + sum);
+        String filePath = "C:/workspace/uploadfiles/engfall/";
+        File newfile = new File(filePath);
+        if(!newfile.exists()) {
+            newfile.mkdirs();
+        }
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("sum", sum);
-        return map;
+        Date date = new Date();
+        String temp_date = date.getTime() + "";
+        String returnValue = temp_date + "_" + filename;
+
+        FileCopyUtils.copy(file.getBytes(), new File(filePath + returnValue));
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
 }

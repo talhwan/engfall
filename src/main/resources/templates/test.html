@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+<div id="div_01" class="div_00">hahaha</div>
+Hello World!
+<div th:text="${sum}">-</div>
+
+<input id="p1" type="number"/>
+<input id="p2" type="number"/>
+
+<button onclick="send_ajax()">add</button>
+
+<script>
+
+    function send_ajax(){
+        $.ajax({
+            url: "/api/index",
+            type: "GET",
+            contentType : 'application/json; charset=utf-8',
+            data: {
+                p1 : $("#p1").val()
+                , p2 : $("#p2").val()
+            },
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+                alert(obj_data.sum);
+                $("#div_01").html(obj_data["sum"]);
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+    /*alert(1);
+    let div_html = $("#div_01"); // => 0 or 1!!!!
+    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
+    alert(div_html.html());*/
+
+</script>
+</body>
+</html>
