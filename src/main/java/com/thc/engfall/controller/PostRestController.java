@@ -23,6 +23,7 @@ public class PostRestController {
     @PostMapping("")
     public ResponseEntity<PostDto.CreateResDto> create(@RequestBody PostDto.CreateReqDto params){
         //return ResponseEntity.ok(postService.create(params));
+        //System.out.println(params.getImgs().size());
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.create(params));
     }
     @PutMapping("")

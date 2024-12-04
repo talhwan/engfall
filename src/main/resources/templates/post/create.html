@@ -12,7 +12,20 @@
 TITLE
 <input id="create_post_title" type="text"/>
 CONTENT
-<input id="create_post_content" type="text"/><!--
+<input id="create_post_content" type="text"/>
+
+<div>
+    IMGS
+    <div id="div_img_list"></div>
+    <button onclick="add_img()">add img</button>
+</div>
+<script>
+    function add_img(){
+        $("#div_img_list").append('<input class="create_postimg_url" type="text"/>');
+    }
+</script>
+
+<!--
 AUTHOR
 <input id="create_post_author" type="text"/>-->
 
@@ -27,7 +40,15 @@ AUTHOR
             alert("you are not logged in...");
             return false;
         }
+        let create_postimg_url = $(".create_postimg_url");
+        let imgs = [];
+        for(let each of create_postimg_url){
+            alert(JSON.stringify(each));
+            alert(JSON.stringify($(each).val()));
+            imgs.push($(each).val());
+        }
 
+        //return false;
         $.ajax({
             url: "/api/post",
             type: "POST",
@@ -36,6 +57,7 @@ AUTHOR
                 title : $("#create_post_title").val()
                 , content : $("#create_post_content").val()
                 , userId : userId
+                , imgs : imgs
             }),
             cache: false,
             success: (obj_data, status, xhr)=>{

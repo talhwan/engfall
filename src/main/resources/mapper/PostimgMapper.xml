@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thc.engfall.mapper.PostimgMapper">
+
+	<!---->
+
+	<select id="detail" parameterType="hashMap" resultType="com.thc.engfall.dto.PostimgDto$DetailResDto">
+		SELECT postimg.id
+			 , postimg.deleted
+			 , postimg.url
+			 , postimg.post_id as postId
+		FROM postimg
+		WHERE postimg.id = #{id}
+	</select>
+	<select id="list" parameterType="hashMap" resultType="com.thc.engfall.dto.PostimgDto$DetailResDto">
+		SELECT postimg.id
+		FROM postimg
+		WHERE postimg.id is not NULL
+		<if test = "deleted != null">AND postimg.deleted = #{deleted}</if>
+		<!--<if test = "url != null and url !=''">AND postimg.url = #{url}</if>-->
+		<if test = "postId != null and postId !=''">AND postimg.post_id = #{postId}</if>
+	</select>
+
+</mapper>

@@ -1,21 +1,19 @@
 package com.thc.engfall.dto;
 
-import com.thc.engfall.entity.Post;
+import com.thc.engfall.entity.Postimg;
 import lombok.*;
 
 import java.util.List;
 
-public class PostDto {
+public class PostimgDto {
 
     @Getter @Setter @Builder
     public static class CreateReqDto {
-        String title;
-        String content;
-        Long userId;
-        List<String> imgs;
+        String url;
+        Long postId;
 
-        public Post toEntity(){
-            return Post.of(title, content, userId);
+        public Postimg toEntity(){
+            return Postimg.of(url, postId);
         }
     }
 
@@ -28,9 +26,8 @@ public class PostDto {
     public static class UpdateReqDto {
         Long id;
 
-        String title;
-        String content;
-        Long userId;
+        String url;
+        Long postId;
     }
 
     @Getter @Setter @Builder
@@ -42,23 +39,13 @@ public class PostDto {
     public static class DetailResDto {
         Long id;
 
-        String title;
-        String content;
-        Long userId;
-
-        String userUsername;
-        String userName;
-        String userPhone;
-
-        //List<String> imgs;
-        List<PostimgDto.DetailResDto> imgs;
+        String url;
+        Long postId;
     }
-
 
     @Getter @Setter @Builder
     public static class ListReqDto {
         Boolean deleted;
-        String title;
-        Long userId;
+        Long postId;
     }
 }

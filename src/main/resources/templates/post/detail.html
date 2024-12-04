@@ -18,6 +18,11 @@ CONTENT
 AUTHOR
 <input id="detail_post_author" type="text"/>
 
+<div>
+    IMGS
+    <div id="div_imgs"></div>
+</div>
+
 <button onclick="detail_post()">detail</button>
 <button onclick="update_post()">update</button>
 <button onclick="delete_post()">delete</button>
@@ -110,12 +115,17 @@ AUTHOR
             cache: false,
             success: (obj_data, status, xhr)=>{
                 //!!!
-                alert(JSON.stringify(obj_data));
+                //alert(JSON.stringify(obj_data));
                 let eachData = obj_data;
                 $("#detail_post_id").val(eachData['id']);
                 $("#detail_post_title").val(eachData['title']);
                 $("#detail_post_content").val(eachData['content']);
                 $("#detail_post_author").val(eachData['author']);
+
+                let imgs = eachData['imgs'];
+                for(let each of imgs){
+                    $("#div_imgs").append('<div>'+each["url"]+'</div>');
+                }
 
             },
             error: (obj_data, status, xhr)=>{
