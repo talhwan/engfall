@@ -13,4 +13,5 @@ public interface PostService {
     void delete(PostDto.UpdateReqDto params);
     PostDto.DetailResDto detail(PostDto.DetailReqDto params);
     List<PostDto.DetailResDto> list(PostDto.ListReqDto params);
+    PostDto.PagedListResDto pagedList(PostDto.PagedListReqDto params);
 }

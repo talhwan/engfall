@@ -8,17 +8,16 @@
 
 </head>
 <body>
-<div>USER LIST</div>
+
+callpage : <input id="input_callpage" type="number"/> <br/>
+perpage : <input id="input_perpage" type="number"/> <br/>
+
+<div>POST PAGED LIST</div>
 <div id="div_list"></div>
 
 <button onclick="list_post()">list</button>
 
 <script>
-
-    let userId = localStorage.getItem("userId");
-    if(userId != null){
-        //alert("userId : " + userId)
-    }
 
     function listener_href(id){
         //alert(id);
@@ -26,18 +25,21 @@
     }
     function list_post(){
         $.ajax({
-            url: "/api/post/list",
+            url: "/api/post/pagedList",
             type: "GET",
             contentType : 'application/json; charset=utf-8',
             data: {
                 deleted : null
                 , name : null
                 , phone : null
+                , callpage : $("#input_callpage").val()
+                , perpage : $("#input_perpage").val()
             },
             cache: false,
             success: (obj_data, status, xhr)=>{
                 //alert(JSON.stringify(obj_data));
-                let alist = obj_data;
+                $("#div_list").html("");
+                let alist = obj_data["list"];
                 for(let each of alist){
                     //alert(each["id"]);
                     $("#div_list").append(

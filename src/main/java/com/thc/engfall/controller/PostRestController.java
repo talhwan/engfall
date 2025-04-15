@@ -36,14 +36,19 @@ public class PostRestController {
         postService.delete(params);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    @GetMapping("/detail")
+    public ResponseEntity<PostDto.DetailResDto> detail(PostDto.DetailReqDto params){
+        return ResponseEntity.ok(postService.detail(params));
+    }
 
     @GetMapping("/list")
     public ResponseEntity<List<PostDto.DetailResDto>> list(PostDto.ListReqDto params){
         return ResponseEntity.ok(postService.list(params));
     }
-    @GetMapping("/detail")
-    public ResponseEntity<PostDto.DetailResDto> detail(PostDto.DetailReqDto params){
-        return ResponseEntity.ok(postService.detail(params));
+
+    @GetMapping("/pagedList")
+    public ResponseEntity<PostDto.PagedListResDto> pagedList(PostDto.PagedListReqDto params){
+        return ResponseEntity.ok(postService.pagedList(params));
     }
 
 }

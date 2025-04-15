@@ -75,10 +75,51 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostDto.DetailResDto> list(PostDto.ListReqDto params){
         List<PostDto.DetailResDto> list = postMapper.list(params);
+        return detailList(list);
+    }
+    public List<PostDto.DetailResDto> detailList(List<PostDto.DetailResDto> list){
         List<PostDto.DetailResDto> newList = new ArrayList<>();
         for(PostDto.DetailResDto each : list){
             newList.add( get(each.getId()) );
         }
         return newList;
+    }
+
+    @Override
+    public PostDto.PagedListResDto pagedList(PostDto.PagedListReqDto params){
+        int listsize = postMapper.pagedListCount(params);
+
+        Integer perpage = params.getPerpage();
+        if(perpage == null || perpage < 1){
+            perpage = 10;
+        }
+        params.setPerpage(perpage);
+
+        int totalpage = listsize / perpage; // 101 / 10 => 11
+        if(listsize % perpage > 0){
+            totalpage++;
+        }
+
+        Integer callpage = params.getCallpage();
+        if(callpage == null || callpage < 1){
+            callpage = 1;
+        }
+        if(callpage > totalpage){
+            callpage = totalpage;
+        }
+        params.setCallpage(callpage);
+
+        int offset = (callpage - 1) * perpage;
+        params.setOffset(offset);
+
+        List<PostDto.DetailResDto> list = postMapper.pagedList(params);
+
+        return PostDto.PagedListResDto.builder()
+                .callpage(callpage)
+                .perpage(perpage)
+                .totalpage(totalpage)
+                .listsize(listsize)
+                .list(detailList(list))
+                .build();
     }
 }

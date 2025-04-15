@@ -26,4 +26,24 @@
 		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
 	</select>
 
+
+	<select id="pagedList" parameterType="hashMap" resultType="com.thc.engfall.dto.PostDto$DetailResDto">
+		SELECT post.id
+		FROM post
+		WHERE post.id is not NULL
+		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
+		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
+		ORDER BY post.id DESC
+		LIMIT #{offset}, #{perpage}
+	</select>
+	<select id="pagedListCount" parameterType="hashMap" resultType="Integer">
+		SELECT count(post.id) as listsize
+		FROM post
+		WHERE post.id is not NULL
+		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
+		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
+	</select>
+
 </mapper>

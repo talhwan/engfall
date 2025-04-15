@@ -61,4 +61,25 @@ public class PostDto {
         String title;
         Long userId;
     }
+
+    @Getter @Setter @Builder
+    public static class PagedListReqDto {
+        Integer offset; // first order!!
+        Integer callpage;
+        Integer perpage;
+
+        Boolean deleted;
+        String title;
+        Long userId;
+    }
+
+    @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
+    public static class PagedListResDto {
+        Integer callpage;
+        Integer perpage;
+        Integer listsize;
+        Integer totalpage;
+
+        List<DetailResDto> list;
+    }
 }
