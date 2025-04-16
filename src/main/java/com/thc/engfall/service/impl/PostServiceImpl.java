@@ -122,4 +122,22 @@ public class PostServiceImpl implements PostService {
                 .list(detailList(list))
                 .build();
     }
+
+    @Override
+    public List<PostDto.DetailResDto> scrollList(PostDto.ScrollListReqDto params) {
+        Integer perpage = params.getPerpage();
+        if(perpage == null || perpage < 1){
+            perpage = 10;
+        }
+        params.setPerpage(perpage);
+
+        Object cursor = params.getCursor();
+        if(cursor != null && !(cursor + "").isEmpty()){
+            cursor = Long.parseLong(cursor + "");
+            params.setCursor(cursor);
+        }
+
+        List<PostDto.DetailResDto> list = postMapper.scrollList(params);
+        return detailList(list);
+    }
 }

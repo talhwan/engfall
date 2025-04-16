@@ -9,4 +9,5 @@ public interface PostMapper {
 	List<PostDto.DetailResDto> list(PostDto.ListReqDto params);
 	List<PostDto.DetailResDto> pagedList(PostDto.PagedListReqDto params);
 	int pagedListCount(PostDto.PagedListReqDto params);
+	List<PostDto.DetailResDto> scrollList(PostDto.ScrollListReqDto params);
 }

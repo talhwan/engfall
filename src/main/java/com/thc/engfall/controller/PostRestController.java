@@ -50,5 +50,9 @@ public class PostRestController {
     public ResponseEntity<PostDto.PagedListResDto> pagedList(PostDto.PagedListReqDto params){
         return ResponseEntity.ok(postService.pagedList(params));
     }
+    @GetMapping("/scrollList")
+    public ResponseEntity<List<PostDto.DetailResDto>> scrollList(PostDto.ScrollListReqDto params){
+        return ResponseEntity.ok(postService.scrollList(params));
+    }
 
 }

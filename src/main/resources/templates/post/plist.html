@@ -14,11 +14,16 @@ perpage : <input id="input_perpage" type="number"/> <br/>
 
 <div>POST PAGED LIST</div>
 <div id="div_list"></div>
+<div id="div_paging"></div>
 
 <button onclick="list_post()">list</button>
 
 <script>
 
+    function listener_page(page){
+        $("#input_callpage").val(page);
+        list_post();
+    }
     function listener_href(id){
         //alert(id);
         location.href = "/post/detail/" + id;
@@ -37,7 +42,7 @@ perpage : <input id="input_perpage" type="number"/> <br/>
             },
             cache: false,
             success: (obj_data, status, xhr)=>{
-                //alert(JSON.stringify(obj_data));
+                alert(JSON.stringify(obj_data));
                 $("#div_list").html("");
                 let alist = obj_data["list"];
                 for(let each of alist){
@@ -45,10 +50,45 @@ perpage : <input id="input_perpage" type="number"/> <br/>
                     $("#div_list").append(
                       "<div onclick='listener_href("+each["id"]+")'>"+each["id"]+"//" + each["title"] + "</div>"
                     );
-                    //$("#div_list").append("<div onclick=\"location.href='/post/detail/"+each['id']+"'\">"+each['name']+"</div>");
                 }
-                //!!!
-                //
+
+                let perpage = Number(obj_data["perpage"]);
+                let callpage = Number(obj_data["callpage"]);
+                $("#input_callpage").val(callpage);
+                $("#input_perpage").val(perpage);
+                let totalpage = Number(obj_data["totalpage"]);
+
+                $("#div_paging").html("");
+                $("#div_paging").append(
+                    "<a href='javascript:listener_page("+1+")'>"+ "<<"+ "</a>"
+                );
+
+                for(let i=0;i<3;i++){
+                    let tempPage = callpage - 3 + i;
+                    if(tempPage > 0 && tempPage <= totalpage){
+                        $("#div_paging").append(
+                            "<a href='javascript:listener_page("+tempPage+")'>"+ "&nbsp;" + tempPage + "&nbsp;" + "</a>"
+                        );
+                    }
+                }
+
+
+                $("#div_paging").append(
+                    "<a href='javascript:listener_page("+callpage+")'>"+ "(" + callpage + ")" + "</a>"
+                );
+
+                for(let i=0;i<3;i++){
+                    let tempPage = callpage + 1 + i;
+                    if(tempPage > 0 && tempPage <= totalpage){
+                        $("#div_paging").append(
+                            "<a href='javascript:listener_page("+tempPage+")'>"+ "&nbsp;" + tempPage + "&nbsp;" + "</a>"
+                        );
+                    }
+                }
+
+                $("#div_paging").append(
+                    "<a href='javascript:listener_page("+totalpage+")'>"+ ">>"+ "</a>"
+                );
             },
             error: (obj_data, status, xhr)=>{
                 alert("error!!");

@@ -14,4 +14,5 @@ public interface PostService {
     PostDto.DetailResDto detail(PostDto.DetailReqDto params);
     List<PostDto.DetailResDto> list(PostDto.ListReqDto params);
     PostDto.PagedListResDto pagedList(PostDto.PagedListReqDto params);
+    List<PostDto.DetailResDto> scrollList(PostDto.ScrollListReqDto params);
 }

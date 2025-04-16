@@ -82,4 +82,15 @@ public class PostDto {
 
         List<DetailResDto> list;
     }
+
+
+    @Getter @Setter @Builder
+    public static class ScrollListReqDto {
+        Object cursor;
+        Integer perpage;
+
+        Boolean deleted;
+        String title;
+        Long userId;
+    }
 }
