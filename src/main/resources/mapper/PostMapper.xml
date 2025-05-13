@@ -7,23 +7,23 @@
 	<select id="detail" parameterType="hashMap" resultType="com.thc.engfall.dto.PostDto$DetailResDto">
 		SELECT post.id
 			 , post.deleted
+			 , post.type
+			 , post.cate
 			 , post.title
+			 , post.location
 			 , post.content
-			 , post.user_id as userId
-		, user.username as userUsername
-		, user.name as userName
-		, user.phone as userPhone
-		FROM post, user
-		WHERE post.user_id = user.id
-		AND post.id = #{id}
+			 , post.img
+		FROM post
+		WHERE post.id = #{id}
 	</select>
 	<select id="list" parameterType="hashMap" resultType="com.thc.engfall.dto.PostDto$DetailResDto">
 		SELECT post.id
 		FROM post
 		WHERE post.id is not NULL
 		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "type != null and type !=''">AND post.type = #{type}</if>
+		<if test = "cate != null and cate !=''">AND post.cate = #{cate}</if>
 		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
-		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
 	</select>
 
 
@@ -32,8 +32,9 @@
 		FROM post
 		WHERE post.id is not NULL
 		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "type != null and type !=''">AND post.type = #{type}</if>
+		<if test = "cate != null and cate !=''">AND post.cate = #{cate}</if>
 		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
-		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
 		ORDER BY post.id DESC
 		LIMIT #{offset}, #{perpage}
 	</select>
@@ -42,8 +43,9 @@
 		FROM post
 		WHERE post.id is not NULL
 		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "type != null and type !=''">AND post.type = #{type}</if>
+		<if test = "cate != null and cate !=''">AND post.cate = #{cate}</if>
 		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
-		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
 	</select>
 
 
@@ -52,8 +54,9 @@
 		FROM post
 		WHERE post.id is not NULL
 		<if test = "deleted != null">AND post.deleted = #{deleted}</if>
+		<if test = "type != null and type !=''">AND post.type = #{type}</if>
+		<if test = "cate != null and cate !=''">AND post.cate = #{cate}</if>
 		<if test = "title != null and title !=''">AND post.name LIKE CONCAT('%', #{title}, '%')</if>
-		<if test = "userId != null and userId !=''">AND post.user_id = #{userId}</if>
 		<if test = "cursor != null and cursor !=''">AND #{cursor} > post.id</if>
 		ORDER BY post.id DESC
 		LIMIT 0, #{perpage}

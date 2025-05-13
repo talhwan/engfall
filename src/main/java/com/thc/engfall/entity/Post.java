@@ -14,20 +14,26 @@ public class Post {
     Long id;
 
     @Setter @Column(nullable = false) Boolean deleted;
+    @Setter @Column(nullable = false) String type; // lost or found
+    @Setter @Column(nullable = false) String cate; // wallet or ....
     @Setter @Column(nullable = false) String title;
+    @Setter @Column(nullable = false) String location;
     @Setter @Column(nullable = false) String content;
-    @Setter @Column(nullable = false) Long userId;
+    @Setter @Column(nullable = false) String img;
 
     protected Post(){}
-    private Post(Boolean deleted, String title, String content, Long userId){
+    private Post(Boolean deleted, String type, String cate, String title, String location, String content, String img){
         this.deleted = deleted;
+        this.type = type;
+        this.cate = cate;
         this.title = title;
+        this.location = location;
         this.content = content;
-        this.userId = userId;
+        this.img = img;
     }
 
-    public static Post of(String title, String content, Long userId){
-        return new Post(false, title, content, userId);
+    public static Post of(String type, String cate, String title, String location, String content, String img){
+        return new Post(false, type, cate, title, location, content, img);
     }
 
     public PostDto.CreateResDto toCreateResDto(){

@@ -1,6 +1,7 @@
 package com.thc.engfall.dto;
 
 import com.thc.engfall.entity.Post;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.util.List;
@@ -9,13 +10,16 @@ public class PostDto {
 
     @Getter @Setter @Builder
     public static class CreateReqDto {
+        String type;
+        String cate;
         String title;
+        String location;
         String content;
-        Long userId;
+        String img;
         List<String> imgs;
 
         public Post toEntity(){
-            return Post.of(title, content, userId);
+            return Post.of(getType(), getCate(), getTitle(), getLocation(), getContent(), getImg());
         }
     }
 
@@ -30,7 +34,6 @@ public class PostDto {
 
         String title;
         String content;
-        Long userId;
     }
 
     @Getter @Setter @Builder
@@ -42,13 +45,12 @@ public class PostDto {
     public static class DetailResDto {
         Long id;
 
+        String type;
+        String cate;
         String title;
+        String location;
         String content;
-        Long userId;
-
-        String userUsername;
-        String userName;
-        String userPhone;
+        String img;
 
         //List<String> imgs;
         List<PostimgDto.DetailResDto> imgs;
@@ -59,7 +61,9 @@ public class PostDto {
     public static class ListReqDto {
         Boolean deleted;
         String title;
-        Long userId;
+
+        String type;
+        String cate;
     }
 
     @Getter @Setter @Builder
@@ -70,7 +74,9 @@ public class PostDto {
 
         Boolean deleted;
         String title;
-        Long userId;
+
+        String type;
+        String cate;
     }
 
     @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
@@ -91,6 +97,8 @@ public class PostDto {
 
         Boolean deleted;
         String title;
-        Long userId;
+
+        String type;
+        String cate;
     }
 }

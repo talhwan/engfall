@@ -13,6 +13,15 @@ import java.net.URLEncoder;
 @RequestMapping("")
 @Controller
 public class DefaultController {
+
+    @GetMapping({"", "/", "/index"})
+    public String index(){
+        return "index";
+    }
+
+    @GetMapping("/posting")
+    public String posting(){ return "posting"; }
+
     @GetMapping("/fileupload")
     public String fileupload(){
         return "fileupload";

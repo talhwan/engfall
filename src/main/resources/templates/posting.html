@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Index - Rapid Bootstrap Template</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="/frontuser/assets/img/favicon.png" rel="icon">
+    <link href="/frontuser/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/frontuser/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/frontuser/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/frontuser/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/frontuser/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/frontuser/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/frontuser/assets/css/main.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="/common/js/handlebars.min.js"></script>
+
+</head>
+
+<body class="index-page">
+
+
+<header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+        <a href="/index" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="/frontuser/assets/img/logo.png" alt=""> -->
+            <h1 class="sitename">Rapid</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="/index">Lost</a></li>
+                <li><a href="/found">Found</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+    </div>
+</header>
+
+<main class="main">
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Lost & Found Posting</h2>
+            <p>Posts below are things people are searching for!</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="type" id="type_lost" value="lost" checked>
+                <label class="form-check-label" for="type_lost">
+                    LOST
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="type" id="type_found" value="found">
+                <label class="form-check-label" for="type_found">
+                    FOUND
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="create_post_title">Title</label>
+                <input type="text" class="form-control" id="create_post_title"  placeholder="text...">
+            </div>
+            <div class="form-group">
+                <label for="create_post_cate">Category</label>
+                <select type="text" class="form-control" id="create_post_cate">
+                    <option value="wallet">wallet</option>
+                    <option value="electronics">electronics</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="create_post_location">Location</label>
+                <input type="text" class="form-control" id="create_post_location"  placeholder="text...">
+            </div>
+            <div class="form-group">
+                <label for="create_post_content">Memo</label>
+                <textarea type="text" class="form-control" id="create_post_content"  placeholder="text..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="input_file">Add Photo</label>
+                <input type="file" class="form-control-file" id="input_file" onchange="readURLFile(this)" />
+            </div>
+
+            <div class="row gy-4" data-aos="fade-up" data-aos-delay="200" id="div_imgs">
+
+            </div>
+
+            <script id="list_info_post" type="text/x-handlebars-template">
+                {{#resultData_post}}
+                <div class="col-lg-4 col-md-6 portfolio-item">
+                    <div class="portfolio-content h-100 m-b">
+                        <img src="/image/{{url}}" class="img-fluid" alt="">
+                        <input class="input_post_imgs" type="hidden" value="{{url}}" alt="" />
+                        <button type="button" class="btn btn-warning btn-sm" onclick="listener_delete_div(this)">X</button>
+                    </div>
+                </div>
+                {{/resultData_post}}
+            </script>
+            <script type="text/javascript">
+                var list_info_post = $("#list_info_post").html();
+                var list_info_post_template = Handlebars.compile(list_info_post);
+            </script>
+
+            <script>
+                function listener_delete_div(obj_this) {
+                    $(obj_this).parent().parent().remove();
+                }
+                function readURLFile(input) {
+                    if (input.files && input.files[0]) {
+                        let reader = new FileReader();
+                        reader.readAsDataURL(input.files[0]);
+                        reader.onload = function(e) {
+                            file_upload(input.files[0])
+                        }
+                    }
+                }
+
+                function file_upload(tempFile) {
+                    let fileData = new FormData();
+                    fileData.append("file", tempFile);
+
+                    $.ajax({
+                        url: "/api/upload",
+                        type: "POST",
+                        data: fileData ,
+                        cache : false,
+                        contentType : false,
+                        processData : false,
+                        success: (data, status, xhr)=>{
+
+                            let each = {
+                                url : data
+                            };
+                            let tList = [];
+                            tList.push(each);
+                            $("#div_imgs").append(list_info_post_template({"resultData_post":tList}));
+                        },
+                        error: (data)=>{
+                            alert("error")
+                        },
+                    });
+                }
+            </script>
+
+            <div class="form-group m-t">
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="create_post()">SUBMIT</button>
+            </div>
+        </div>
+
+    </section><!-- /Portfolio Section -->
+
+
+
+</main>
+
+<footer id="footer" class="footer light-background">
+
+    <div class="container">
+        <div class="row gy-3">
+            <div class="col-lg-3 col-md-6 d-flex">
+                <i class="bi bi-geo-alt icon"></i>
+                <div class="address">
+                    <h4>Address</h4>
+                    <p>A108 Adam Street</p>
+                    <p>New York, NY 535022</p>
+                    <p></p>
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 d-flex">
+                <i class="bi bi-telephone icon"></i>
+                <div>
+                    <h4>Contact</h4>
+                    <p>
+                        <strong>Phone:</strong> <span>+1 5589 55488 55</span><br>
+                        <strong>Email:</strong> <span>info@example.com</span><br>
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 d-flex">
+                <i class="bi bi-clock icon"></i>
+                <div>
+                    <h4>Opening Hours</h4>
+                    <p>
+                        <strong>Mon-Sat:</strong> <span>11AM - 23PM</span><br>
+                        <strong>Sunday</strong>: <span>Closed</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h4>Follow Us</h4>
+                <div class="social-links d-flex">
+                    <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Rapid</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you've purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+    </div>
+
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="/frontuser/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/frontuser/assets/vendor/php-email-form/validate.js"></script>
+<script src="/frontuser/assets/vendor/aos/aos.js"></script>
+<script src="/frontuser/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/frontuser/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/frontuser/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="/frontuser/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/frontuser/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+<!-- Main JS File -->
+<script src="/frontuser/assets/js/main.js"></script>
+
+<script>
+    function create_post(){
+        let mainImg = null;
+        let input_post_imgs = $(".input_post_imgs");
+        let imgs = [];
+        for(let each of input_post_imgs){
+            imgs.push($(each).val());
+        }
+
+        if(imgs.length > 0){
+            mainImg = imgs[0];
+        }
+
+        //return false;
+
+
+
+        $.ajax({
+            url: "/api/post",
+            type: "POST",
+            contentType : 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                type : $("input:radio[name='type']:checked").val()
+                , cate : $("#create_post_cate").val()
+                , title : $("#create_post_title").val()
+                , location : $("#create_post_location").val()
+                , content : $("#create_post_content").val()
+                , img : mainImg
+                , imgs : imgs
+            }),
+            cache: false,
+            success: (obj_data, status, xhr)=>{
+                //!!!
+                alert(JSON.stringify(obj_data));
+
+            },
+            error: (obj_data, status, xhr)=>{
+                alert("error!!");
+                alert(JSON.stringify(obj_data));
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

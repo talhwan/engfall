@@ -42,12 +42,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public void update(PostDto.UpdateReqDto params){
         Post post = postRepository.findById(params.getId()).orElseThrow(() -> new RuntimeException("no data"));
-        if(params.getTitle() != null){
-            post.setTitle(params.getTitle());
-        }
-        if(params.getContent() != null){
-            post.setContent(params.getContent());
-        }
+        if(params.getTitle() != null){ post.setTitle(params.getTitle()); }
+        if(params.getTitle() != null){ post.setTitle(params.getTitle()); }
+        if(params.getContent() != null){ post.setContent(params.getContent()); }
         postRepository.save(post);
     }
 
