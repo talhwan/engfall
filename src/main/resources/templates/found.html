@@ -35,7 +35,7 @@
 
         <!-- Section Title -->
         <div class="container section-title" data-aos="fade-up">
-            <h2>Lost</h2>
+            <h2>Found</h2>
             <p>Posts below are things people are searching for!</p>
         </div><!-- End Section Title -->
 
@@ -89,6 +89,7 @@
     $( document ).ready(function() {
         list_post()
     });
+
     function search_changed(){
         $("#tbody_post_list").html("");
         list_post();
@@ -112,7 +113,7 @@
                 , phone : null
                 , perpage : 6
                 , cursor : cursor
-                , type : 'lost'
+                , type : 'found'
                 , cate : $("#search_post_cate").val()
             },
             cache: false,

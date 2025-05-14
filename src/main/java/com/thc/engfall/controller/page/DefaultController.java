@@ -19,8 +19,9 @@ public class DefaultController {
         return "index";
     }
 
-    @GetMapping("/posting")
-    public String posting(){ return "posting"; }
+    @GetMapping("/posting") public String posting(){ return "posting"; }
+    @GetMapping("/lost") public String lost(){ return "index"; }
+    @GetMapping("/found") public String found(){ return "found"; }
 
     @GetMapping("/fileupload")
     public String fileupload(){

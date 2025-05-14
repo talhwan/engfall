@@ -1,99 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-
+    <head th:replace="~{@{includes/head}}"></head>
 </head>
-<body>
-<div id="div_01" class="div_00">BOARD DETAIL</div>
-ID
-<input id="detail_post_id" type="text" readonly="readonly"/>
-TITLE
-<input id="detail_post_title" type="text"/>
-CONTENT
-<input id="detail_post_content" type="text"/>
-AUTHOR
-<input id="detail_post_author" type="text"/>
 
-<div>
-    IMGS
-    <div id="div_imgs"></div>
-</div>
+<body class="index-page">
 
-<button onclick="detail_post()">detail</button>
-<button onclick="update_post()">update</button>
-<button onclick="delete_post()">delete</button>
+
+<body th:replace="~{@{includes/header}}"></body>
+
+<main class="main">
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Detail</h2>
+            <p>Posts below are things people are searching for!</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+            <div class="isotope-layout">
+
+                title : <p class="font_post_title"></p>
+                type : <p class="font_post_type"></p>
+                cate : <p class="font_post_cate"></p>
+                location : <p class="font_post_location"></p>
+                content : <p class="font_post_content"></p>
+
+
+                <div class="row gy-4" data-aos="fade-up" data-aos-delay="200" id="div_imgs">
+
+                </div>
+
+                <script id="list_info_post" type="text/x-handlebars-template">
+                    {{#resultData_post}}
+                    <div class="col-lg-4 col-md-6 portfolio-item">
+                        <div class="portfolio-content h-100 m-b">
+                            <img src="/image/{{url}}" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                    {{/resultData_post}}
+                </script>
+                <script type="text/javascript">
+                    var list_info_post = $("#list_info_post").html();
+                    var list_info_post_template = Handlebars.compile(list_info_post);
+                </script>
+
+
+            </div>
+
+        </div>
+
+    </section><!-- /Portfolio Section -->
+
+
+</main>
+
+<body th:replace="~{@{includes/footer}}"></body>
+<body th:replace="~{@{includes/bottom}}"></body>
 
 <script>
     $( document ).ready(function() {
         console.log( "ready!" );
         detail_post();
     });
-    function update_post(){
-
-        //url에서 id값 추출해오기!
-        let temp_url = window.location.href; // http://localhost:8080/post/detail/1?aerlael=222
-        let split_temp_url = temp_url.split('/');
-        let final_id = split_temp_url[split_temp_url.length - 1];
-        let split_q = final_id.split("?");
-        if(split_q.length > 0){
-            final_id = split_q[0];
-        }
-
-        $.ajax({
-            url: "/api/post",
-            type: "PUT",
-            contentType : 'application/json; charset=utf-8',
-            data: JSON.stringify({
-                id : final_id
-                ,title : $("#detail_post_title").val()
-                ,content : $("#detail_post_content").val()
-                ,author : $("#detail_post_author").val()
-            }),
-            cache: false,
-            success: (obj_data, status, xhr)=>{
-                //!!!
-                alert(JSON.stringify(obj_data));
-            },
-            error: (obj_data, status, xhr)=>{
-                alert("error!!");
-                alert(JSON.stringify(obj_data));
-            }
-        });
-    }
-    function delete_post(){
-
-        //url에서 id값 추출해오기!
-        let temp_url = window.location.href; // http://localhost:8080/post/detail/1?aerlael=222
-        let split_temp_url = temp_url.split('/');
-        let final_id = split_temp_url[split_temp_url.length - 1];
-        let split_q = final_id.split("?");
-        if(split_q.length > 0){
-            final_id = split_q[0];
-        }
-
-        $.ajax({
-            url: "/api/post",
-            type: "DELETE",
-            contentType : 'application/json; charset=utf-8',
-            data: JSON.stringify({
-                id : final_id
-            }),
-            cache: false,
-            success: (obj_data, status, xhr)=>{
-                //!!!
-                alert(JSON.stringify(obj_data));
-            },
-            error: (obj_data, status, xhr)=>{
-                alert("error!!");
-                alert(JSON.stringify(obj_data));
-            }
-        });
-    }
-
     function detail_post(){
 
         //url에서 id값 추출해오기!
@@ -114,17 +87,20 @@ AUTHOR
             },
             cache: false,
             success: (obj_data, status, xhr)=>{
-                //!!!
-                //alert(JSON.stringify(obj_data));
                 let eachData = obj_data;
-                $("#detail_post_id").val(eachData['id']);
-                $("#detail_post_title").val(eachData['title']);
-                $("#detail_post_content").val(eachData['content']);
-                $("#detail_post_author").val(eachData['author']);
+                //$(".font_post_id").val(eachData['id']);
+                $(".font_post_title").html(eachData['title']);
+                $(".font_post_content").html(eachData['content']);
+                $(".font_post_location").html(eachData['location']);
+                $(".font_post_cate").html(eachData['cate']);
+                $(".font_post_type").html(eachData['type']);
 
                 let imgs = eachData['imgs'];
                 for(let each of imgs){
-                    $("#div_imgs").append('<div>'+each["url"]+'</div>');
+
+                    let tList = [];
+                    tList.push(each);
+                    $("#div_imgs").append(list_info_post_template({"resultData_post":tList}));
                 }
 
             },
@@ -134,11 +110,8 @@ AUTHOR
             }
         });
     }
-    /*alert(1);
-    let div_html = $("#div_01"); // => 0 or 1!!!!
-    let div_class = $(".div_00"); //0 od 1 2 3 4 ....
-    alert(div_html.html());*/
-
 </script>
+
 </body>
+
 </html>
